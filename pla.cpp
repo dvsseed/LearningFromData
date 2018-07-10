@@ -1,6 +1,7 @@
 //
 // Perceptron Learning Algorithm for no.15 of quiz 1
 // Created by Davis on 2018/7/7.
+// Modified by Davis on 2018/7/10.
 //
 
 #include <fstream>

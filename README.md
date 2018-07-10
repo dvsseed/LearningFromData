@@ -2,7 +2,7 @@
 
 ## Perceptron Learning Algorithm（PLA）
 
-![Alt text](/path/to/img.jpg "Optional title")
+![Problem #15](/q_15.png "Problem #15")
 
 
 ***

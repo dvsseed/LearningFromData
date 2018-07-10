@@ -22,9 +22,9 @@ using namespace std;
 
 double weight[ DIMENSION ];  // weight
 int updates = 0;  // the numbers of updates
-int n = 0;  // the numbers of training examples
+unsigned long n = 0;  // the numbers of training examples
 auto datFile = "../hw1_15_train.dat";  // the file of D: training examples
-// The URL is ==> https://d396qusza40orc.cloudfront.net/ntumlone%2Fhw1%2Fhw1_15_train.dat
+// The URL is ==> https://www.csie.ntu.edu.tw/~htlin/mooc/datasets/mlfound_math/hw1_15_train.dat
 
 // training examples: (input = x, output = y)
 struct trainingExamples {

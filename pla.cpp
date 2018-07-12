@@ -1,7 +1,13 @@
 //
 // Perceptron Learning Algorithm for no.15 of quiz 1
 // Created by Davis on 2018/7/7.
-// Modified by Davis on 2018/7/11.
+// Modified by Davis on 2018/7/12.
+// -----------------------------------------------
+//   customer features x: points in R4
+//   labels y: o(+1), x(-1)
+//   hypothesis h: lines, h(x) = sign(w0 + w1x1 + w2x2)
+//   perceptrons <=> linear (binary) classifiers
+// -----------------------------------------------
 //
 
 #include <fstream>
@@ -41,7 +47,7 @@ vector< trainingExamples > dataSet;
 void getData( ifstream &datFile ) {
     while ( !datFile.eof( ) ) {
         struct trainingExamples currentTraining{ };
-        currentTraining.input[ 0 ] = 1;  // to add x0 = 1 to each xn
+        currentTraining.input[ 0 ] = 1;  // to add x0 = +1 to each xn
         for ( int i = 1; DIMENSION > i; i++ ) {
             datFile >> currentTraining.input[ i ];
         }
@@ -106,6 +112,7 @@ void PLA( ) {
     std::cout << "====================================" << std::endl;
 
     while ( !isFinished ) {
+        // h(x) = sign(w0 + w1x1 + w2x2 + w3x3 + w4x4)
         if ( dataSet[ index ].output == sign( multiply( weight, dataSet[ index ].input, DIMENSION ) ) ) {
             /* for debug
             std::cout << "  <weight> " << weight[0] << "," << weight[1] << "," << weight[2] << "," << weight[3] << "," << weight[4] << std::endl;
@@ -120,12 +127,12 @@ void PLA( ) {
             multiply( temp, dataSet[ index ].input, DIMENSION, dataSet[ index ].output );  // to calculate : y * x
             add( weight, temp, DIMENSION );  // to calculate : w(t+1) = w(t) + y(t) * x(t)
 
-            /* for debug
+            /* for debug */
             std::cout << "  <temp> " << temp[0] << "," << temp[1] << "," << temp[2] << "," << temp[3] << "," << temp[4] << std::endl;
             std::cout << "  <weight> " << weight[0] << "," << weight[1] << "," << weight[2] << "," << weight[3] << "," << weight[4] << std::endl;
             std::cout << "  <input> " << dataSet[index].input[0] << "," << dataSet[index].input[1] << "," << dataSet[index].input[2] << "," << dataSet[index].input[3] << "," << dataSet[index].input[4] << std::endl;
             std::cout << "  <output> " << dataSet[index].output << std::endl;
-            */
+            /* */
 
             updates++;  // the number of updates
             correctNum = 0;  // 由于出错了，连续正确样本数归0

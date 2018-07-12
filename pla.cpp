@@ -14,6 +14,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <iomanip>
 
 #ifdef WINDOWS
     #include <direct.h>
@@ -110,9 +111,9 @@ void PLA ( ) {
     int index = 0;  // example counter
     bool isFinished = false;  // =true means no more mistakes
 
-    std::cout << "====================================" << std::endl;
-    std::cout << "*** To execute the PLA (n = " << n << ") ***" << std::endl;
-    std::cout << "====================================" << std::endl;
+    std::cout << "=======================================" << std::endl;
+    std::cout << "*** To execute the PLA  ( n = " << n << " ) ***" << std::endl;
+    std::cout << "=======================================" << std::endl;
 
     while ( !isFinished ) {
         // h(x) = sign(w0 + w1x1 + w2x2 + w3x3 + w4x4)
@@ -139,7 +140,7 @@ void PLA ( ) {
 
             updates++;  // the number of updates
             correctNum = 0;  // find a mistake so return to 0
-            std::cout << " Update: " << updates << "  ( Index = " << index + 1 << " is wrong! )" << std::endl;
+            std::cout << " Update: " << setw(2) << setfill('0') << updates << "  ( Index = " << setw(3) << setfill('0') << index + 1 << " is wrong! )" << std::endl;
         }
         if ( index == n - 1 ) {
             index = 0;

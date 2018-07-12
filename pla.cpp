@@ -40,7 +40,7 @@ struct trainingExamples {
     int output;
 };
 
-// 把记录存在向量里而不是存在结构体数组内，这样可以根据实际一项项添加
+// to store the features(inputs) and outputs to vector, lines by lines from the file of data set
 vector< trainingExamples > dataSet;
 
 // to read the dat file into the training example's vector
@@ -49,9 +49,12 @@ void getData( ifstream &datFile ) {
         struct trainingExamples currentTraining{ };
         currentTraining.input[ 0 ] = 1;  // to add x0 = +1 to each xn
         for ( int i = 1; DIMENSION > i; i++ ) {
-            datFile >> currentTraining.input[ i ];
+            datFile >> currentTraining.input[ i ];  // 儲存每行按空格間隔的數據
         }
         datFile >> currentTraining.output;
+        /* for debug
+        std::cout << "  <dataset> " << currentTraining.output << std::endl;
+        */
         dataSet.push_back( currentTraining );  // 添加元素至vector容器
     }
     datFile.close( );
@@ -80,19 +83,19 @@ void multiply( double *result, const double *x, int dimension, int y ) {
 
 // to add the two vectors, to store the result to the first tuple, to calculate : w(t+1) <- w(t) + y(t) * x(t)
 void add( double *w, const double *yx, int dimension ) {
-    for ( int i = 0; i < dimension; i++ ) {
-        w[ i ] += yx[ i ];
-        /* for debug */
-        std::cout << "  <w" << i << "> " << w[i] << std::endl;
-        /* */
+    for ( int t = 0; t < dimension; t++ ) {
+        w[ t ] += yx[ t ];
+        /* for debug
+        std::cout << "  <w" << t << "> " << w[t] << std::endl;
+        */
     }
 }
 
 // 计算两数值相乘值，用于判断 w*x 是否小于0，若小于0要执行修正算法
 double multiply( const double *w, const double *x, int dimension ) {
     double temp = 0.0;
-    for ( int i = 0; i < dimension; i++ ) {
-        temp += w[ i ] * x[ i ];
+    for ( int t = 0; t < dimension; t++ ) {
+        temp += w[ t ] * x[ t ];
     }
 
     /* for debug
@@ -113,7 +116,7 @@ void PLA( ) {
 
     while ( !isFinished ) {
         // h(x) = sign(w0 + w1x1 + w2x2 + w3x3 + w4x4)
-        if ( dataSet[ index ].output == sign( multiply( weight, dataSet[ index ].input, DIMENSION ) ) ) {
+        if ( sign( multiply( weight, dataSet[ index ].input, DIMENSION ) ) == dataSet[ index ].output ) {
             /* for debug
             std::cout << "  <weight> " << weight[0] << "," << weight[1] << "," << weight[2] << "," << weight[3] << "," << weight[4] << std::endl;
             std::cout << "  <input> " << dataSet[index].input[0] << "," << dataSet[index].input[1] << "," << dataSet[index].input[2] << "," << dataSet[index].input[3] << "," << dataSet[index].input[4] << std::endl;
@@ -122,17 +125,17 @@ void PLA( ) {
             */
 
             correctNum++;  // 当前样本无错，连续正确样本数+1
-        } else {  // 出错，执行修正算法
+        } else {  // find a mistake of wt, sign( wt * xn(t) ) != yn(t)
             double temp[ DIMENSION ];
             multiply( temp, dataSet[ index ].input, DIMENSION, dataSet[ index ].output );  // to calculate : y * x
-            add( weight, temp, DIMENSION );  // to calculate : w(t+1) = w(t) + y(t) * x(t)
+            add( weight, temp, DIMENSION );  // (try to) correct the mistake by w(t+1) <- w(t) + yn(t) * xn(t)
 
-            /* for debug */
+            /* for debug
             std::cout << "  <temp> " << temp[0] << "," << temp[1] << "," << temp[2] << "," << temp[3] << "," << temp[4] << std::endl;
             std::cout << "  <weight> " << weight[0] << "," << weight[1] << "," << weight[2] << "," << weight[3] << "," << weight[4] << std::endl;
             std::cout << "  <input> " << dataSet[index].input[0] << "," << dataSet[index].input[1] << "," << dataSet[index].input[2] << "," << dataSet[index].input[3] << "," << dataSet[index].input[4] << std::endl;
             std::cout << "  <output> " << dataSet[index].output << std::endl;
-            /* */
+            */
 
             updates++;  // the number of updates
             correctNum = 0;  // 由于出错了，连续正确样本数归0
@@ -143,6 +146,7 @@ void PLA( ) {
         } else {
             index++;
         }
+        // until no more mistakes
         if ( correctNum == n ) {  // 当前连续正确样本数，当等于n则表明轮完一圈，则表示全部正确，算法结束
             isFinished = true;  // the algorithm halts
         }

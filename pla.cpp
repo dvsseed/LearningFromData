@@ -28,7 +28,7 @@
 using namespace std;
 
 unsigned short debug = 0;  // for debug=1(show debug)
-double weight[ DIMENSION ];  // weight
+double weight [ DIMENSION ];  // weight
 int updates = 0;  // the numbers of updates
 unsigned long n = 0;  // the numbers of training examples
 auto datFile = "../hw1_15_train.dat";  // the file of D: training examples
@@ -36,33 +36,33 @@ auto datFile = "../hw1_15_train.dat";  // the file of D: training examples
 
 // training examples: (input = x, output = y)
 struct trainingExamples {
-    double input[ DIMENSION ];
+    double input [ DIMENSION ];
     int output;
 };
 
 // to store the features(inputs) and outputs to vector, lines by lines from the file of data set
-vector< trainingExamples > dataSet;
+vector < trainingExamples > dataSet;
 
 // to read the dat file into the training example's vector
-void getData( ifstream &datFile ) {
-    while ( !datFile.eof( ) ) {
-        struct trainingExamples currentTraining{ };
-        currentTraining.input[ 0 ] = 1;  // to add x0 = +1 to each xn
+void getData ( ifstream &datFile ) {
+    while ( !datFile.eof ( ) ) {
+        struct trainingExamples currentTraining { };
+        currentTraining.input [ 0 ] = 1;  // to add x0 = +1 to each xn
         for ( int i = 1; DIMENSION > i; i++ ) {
-            datFile >> currentTraining.input[ i ];  // 儲存每行按空格間隔的數據
+            datFile >> currentTraining.input [ i ];  // space-separated between each line
         }
         datFile >> currentTraining.output;
         /* for debug
         std::cout << "  <dataset> " << currentTraining.output << std::endl;
         */
-        dataSet.push_back( currentTraining );  // 添加元素至vector容器
+        dataSet.push_back ( currentTraining );  // adds a new element at the end of the vector
     }
-    datFile.close( );
-    n = dataSet.size( );
+    datFile.close ( );
+    n = dataSet.size ( );
 }
 
 // sign value
-int sign( double x ) {
+int sign ( double x ) {
     if ( x <= 0 ) {
         return -1;  // sign(0) as -1
     } else {
@@ -70,10 +70,10 @@ int sign( double x ) {
     }
 }
 
-// 计算实数 num 与 向量乘积 放在 result 中，用于计算 y*x
-void multiply( double *result, const double *x, int dimension, int y ) {
+// to calculate y*x (vector dot product) and to store result
+void multiply ( double *result, const double *x, int dimension, int y ) {
     for ( int i = 0; i < dimension; i++ ) {
-        result[ i ] = y * x[ i ];
+        result [ i ] = y * x [ i ];
 
         /* for debug
         std::cout << "  <result " << i << "> " << result[i] << std::endl;
@@ -82,20 +82,20 @@ void multiply( double *result, const double *x, int dimension, int y ) {
 }
 
 // to add the two vectors, to store the result to the first tuple, to calculate : w(t+1) <- w(t) + y(t) * x(t)
-void add( double *w, const double *yx, int dimension ) {
+void add ( double *w, const double *yx, int dimension ) {
     for ( int t = 0; t < dimension; t++ ) {
-        w[ t ] += yx[ t ];
+        w [ t ] += yx [ t ];
         /* for debug
         std::cout << "  <w" << t << "> " << w[t] << std::endl;
         */
     }
 }
 
-// 计算两数值相乘值，用于判断 w*x 是否小于0，若小于0要执行修正算法
-double multiply( const double *w, const double *x, int dimension ) {
+// h(x) = sign(wt * x), find a mistake of wt called ( xn(t), yn(t) ) then correct the mistake
+double multiply ( const double *w, const double *x, int dimension ) {
     double temp = 0.0;
     for ( int t = 0; t < dimension; t++ ) {
-        temp += w[ t ] * x[ t ];
+        temp += w [ t ] * x [ t ];
     }
 
     /* for debug
@@ -105,10 +105,10 @@ double multiply( const double *w, const double *x, int dimension ) {
 }
 
 // Perceptron Learning Algorithm
-void PLA( ) {
-    int correctNum = 0;  // 当前连续正确样本数，当等于n则表明轮完一圈，则表示全部正确，算法结束
-    int index = 0;  // 当前正在计算第几个样本
-    bool isFinished = false;  // 算法是否全部完成的表示，=true表示算法结束
+void PLA ( ) {
+    int correctNum = 0;  // correct counter
+    int index = 0;  // example counter
+    bool isFinished = false;  // =true means no more mistakes
 
     std::cout << "====================================" << std::endl;
     std::cout << "*** To execute the PLA (n = " << n << ") ***" << std::endl;
@@ -116,7 +116,7 @@ void PLA( ) {
 
     while ( !isFinished ) {
         // h(x) = sign(w0 + w1x1 + w2x2 + w3x3 + w4x4)
-        if ( sign( multiply( weight, dataSet[ index ].input, DIMENSION ) ) == dataSet[ index ].output ) {
+        if ( sign ( multiply ( weight, dataSet [ index ].input, DIMENSION ) ) == dataSet [ index ].output ) {
             /* for debug
             std::cout << "  <weight> " << weight[0] << "," << weight[1] << "," << weight[2] << "," << weight[3] << "," << weight[4] << std::endl;
             std::cout << "  <input> " << dataSet[index].input[0] << "," << dataSet[index].input[1] << "," << dataSet[index].input[2] << "," << dataSet[index].input[3] << "," << dataSet[index].input[4] << std::endl;
@@ -124,11 +124,11 @@ void PLA( ) {
             std::cout << "  <sign> " << sign( multiply( weight, dataSet[ index ].input, DIMENSION ) ) << std::endl;
             */
 
-            correctNum++;  // 当前样本无错，连续正确样本数+1
+            correctNum++;  // correct add 1
         } else {  // find a mistake of wt, sign( wt * xn(t) ) != yn(t)
-            double temp[ DIMENSION ];
-            multiply( temp, dataSet[ index ].input, DIMENSION, dataSet[ index ].output );  // to calculate : y * x
-            add( weight, temp, DIMENSION );  // (try to) correct the mistake by w(t+1) <- w(t) + yn(t) * xn(t)
+            double temp [ DIMENSION ];
+            multiply ( temp, dataSet [ index ].input, DIMENSION, dataSet [ index ].output );  // to calculate : y * x
+            add ( weight, temp, DIMENSION );  // (try to) correct the mistake by w(t+1) <- w(t) + yn(t) * xn(t)
 
             /* for debug
             std::cout << "  <temp> " << temp[0] << "," << temp[1] << "," << temp[2] << "," << temp[3] << "," << temp[4] << std::endl;
@@ -138,7 +138,7 @@ void PLA( ) {
             */
 
             updates++;  // the number of updates
-            correctNum = 0;  // 由于出错了，连续正确样本数归0
+            correctNum = 0;  // find a mistake so return to 0
             std::cout << " Update: " << updates << "  ( Index = " << index + 1 << " is wrong! )" << std::endl;
         }
         if ( index == n - 1 ) {
@@ -147,7 +147,7 @@ void PLA( ) {
             index++;
         }
         // until no more mistakes
-        if ( correctNum == n ) {  // 当前连续正确样本数，当等于n则表明轮完一圈，则表示全部正确，算法结束
+        if ( correctNum == n ) {  // =n means no more mistakes
             isFinished = true;  // the algorithm halts
         }
     }
@@ -157,29 +157,29 @@ void PLA( ) {
     std::cout << "=======================================" << std::endl;
 }
 
-// To get the current working directory(path)
-std::string GetCurrentWorkingDir( ) {
-    char buff[ FILENAME_MAX ];
-    GetCurrentDir( buff, FILENAME_MAX );
-    std::string currentWorkingDir( buff );
+// to get the current working directory(path)
+std::string GetCurrentWorkingDir ( ) {
+    char buff [ FILENAME_MAX ];
+    GetCurrentDir ( buff, FILENAME_MAX );
+    std::string currentWorkingDir ( buff );
     return currentWorkingDir;
 }
 
-int main( ) {
+int main ( ) {
     // std::cout << "Current directory is " << GetCurrentWorkingDir() << std::endl;
 
-    ifstream dataFile( datFile );
-    if ( dataFile.is_open( ) ) {
-        getData( dataFile );
+    ifstream dataFile ( datFile );
+    if ( dataFile.is_open ( ) ) {
+        getData ( dataFile );
     } else {
         std::cout << "Error opening file!" << std::endl;
-        exit( 1 );
+        exit ( 1 );
     }
 
     for ( double &i : weight ) {
         i = 0.0;
     }
-    PLA( );
+    PLA ( );
 
     return 0;
 }

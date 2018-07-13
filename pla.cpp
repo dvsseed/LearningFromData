@@ -124,10 +124,12 @@ void PLA ( ) {
     int index = 0;  // example counter
     bool isFinished = false;  // =true means no more mistakes
 
+    // header
     dupstr ( );
     std::cout << "*** To execute the PLA  ( n = " << n << " ) ***" << std::endl;
     dupstr ( );
 
+    // learning algorithm
     while ( !isFinished ) {
         // h(x) = sign(w0 + w1x1 + w2x2 + w3x3 + w4x4)
         if ( sign ( multiply ( weight, dataSet [ index ].input, DIMENSION ) ) == dataSet [ index ].output ) {
@@ -166,6 +168,7 @@ void PLA ( ) {
         }
     }
 
+    // footer
     dupstr ( );
     std::cout << "***       Final update: [ " << updates << " ]      ***" << std::endl;
     dupstr ( );

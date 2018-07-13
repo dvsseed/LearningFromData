@@ -34,13 +34,13 @@ class PLA {
     // to declare a variable of type
     // unsigned short debug = 0;  // for debug=1(show debug text)
     unsigned short x0 = 1;  // to assign the value of x0
-    int updates = 0;  // the numbers of updates
+    unsigned short updates = 0;  // the numbers of updates
     unsigned long n = 0;  // the numbers of training examples
 
     // training examples: (input = x, output = y)
     struct trainingExamples {
         double input[DIMENSION];
-        int output;
+        short int output;
     };
 
     // to store the features(inputs) and outputs to vector, lines by lines from the file of data set
@@ -57,7 +57,7 @@ public:
         while (!datFile.eof()) {
             struct trainingExamples currentTraining{};
             currentTraining.input[0] = x0;  // to add x0 = +1 to each xn
-            for (int i = 1; DIMENSION > i; i++) {
+            for (unsigned short i = 1; DIMENSION > i; i++) {
                 datFile >> currentTraining.input[i];  // space-separated between each line
             }
             datFile >> currentTraining.output;
@@ -71,7 +71,7 @@ public:
     }
 
     // sign value
-    int sign(double x) {
+    short int sign(double x) {
         if (x <= 0) {
             return -1;  // sign(0) as -1
         } else {
@@ -80,8 +80,8 @@ public:
     }
 
     // to calculate y*x (vector dot product) and to store result
-    void multiply(double *result, const double *x, int dimension, int y) {
-        for (int i = 0; i < dimension; i++) {
+    void multiply(double *result, const double *x, unsigned short dimension, short int y) {
+        for (unsigned short i = 0; i < dimension; i++) {
             result[i] = y * x[i];
 
             /* for debug
@@ -91,8 +91,8 @@ public:
     }
 
     // to add the two vectors, to store the result to the first tuple, to calculate : w(t+1) <- w(t) + y(t) * x(t)
-    void add(double *w, const double *yx, int dimension) {
-        for (int t = 0; t < dimension; t++) {
+    void add(double *w, const double *yx, unsigned short dimension) {
+        for (unsigned short t = 0; t < dimension; t++) {
             w[t] += yx[t];
             /* for debug
             std::cout << "  <w" << t << "> " << w[t] << std::endl;
@@ -101,9 +101,9 @@ public:
     }
 
     // h(x) = sign(wt * x), find a mistake of wt called ( xn(t), yn(t) ) then correct the mistake
-    double multiply(const double *w, const double *x, int dimension) {
+    double multiply(const double *w, const double *x, unsigned short dimension) {
         double temp = 0.0;
-        for (int t = 0; t < dimension; t++) {
+        for (unsigned short t = 0; t < dimension; t++) {
             temp += w[t] * x[t];
         }
 
@@ -127,8 +127,9 @@ public:
 
     // Perceptron Learning Algorithm
     void PerceptronLearningAlgorithm() {
-        int correctNum = 0;  // correct counter
-        int index = 0;  // example counter
+        unsigned short correctNum = 0;  // correct counter
+        unsigned short index = 0;  // example counter
+        unsigned short runno = 0;
         bool isFinished = false;  // =true means no more mistakes
 
         // header
@@ -166,6 +167,8 @@ public:
             }
             if (index == n - 1) {
                 index = 0;
+                runno++;
+                std::cout << "   Times: " << runno << std::endl;
             } else {
                 index++;
             }

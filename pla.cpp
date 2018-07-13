@@ -25,11 +25,13 @@
     #define GetCurrentDir getcwd
 #endif
 
-#define DIMENSION 5  // d-dimensional Euclidean space
+#define DIMENSION 5  // d-dimensional Euclidean space, problem #15 is 4-dimensions
 
 using namespace std;
 
-unsigned short debug = 0;  // for debug=1(show debug)
+// to declare a variable of type
+unsigned short debug = 0;  // for debug=1(show debug text)
+unsigned short x0 = 1;  // to assign the value of x0
 double weight [ DIMENSION ];  // weight
 int updates = 0;  // the numbers of updates
 unsigned long n = 0;  // the numbers of training examples
@@ -49,7 +51,7 @@ vector < trainingExamples > dataSet;
 void getData ( ifstream &datFile ) {
     while ( !datFile.eof ( ) ) {
         struct trainingExamples currentTraining { };
-        currentTraining.input [ 0 ] = 1;  // to add x0 = +1 to each xn
+        currentTraining.input [ 0 ] = x0;  // to add x0 = +1 to each xn
         for ( int i = 1; DIMENSION > i; i++ ) {
             datFile >> currentTraining.input [ i ];  // space-separated between each line
         }

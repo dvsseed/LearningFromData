@@ -1,7 +1,7 @@
 //
-// Perceptron Learning Algorithm for no.15 of quiz 1
+// Perceptron Learning Algorithm for no.15 of quiz 1st
 // Created by Davis on 2018/7/7.
-// Modified by Davis on 2018/7/12.
+// Modified by Davis on 2018/7/13.
 // -----------------------------------------------
 //   customer features x: points in R4
 //   labels y: o(+1), x(-1)
@@ -149,7 +149,7 @@ public:
 
                 correctNum++;  // correct add 1
             } else {  // find a mistake of wt, sign( wt * xn(t) ) != yn(t)
-                double temp[DIMENSION];
+                double temp[DIMENSION]{};
                 multiply(temp, dataSet[index].input, DIMENSION, dataSet[index].output);  // to calculate : y * x
                 add(weight, temp, DIMENSION);  // (try to) correct the mistake by w(t+1) <- w(t) + yn(t) * xn(t)
 
@@ -162,8 +162,7 @@ public:
 
                 updates++;  // the number of updates
                 correctNum = 0;  // find a mistake so return to 0
-                std::cout << " Update: " << fillZero(2, updates) << "  ( Index = " << fillZero(3, index + 1)
-                          << " is wrong! )" << std::endl;
+                std::cout << " Update: " << fillZero(2, updates) << "  ( Index = " << fillZero(3, index + 1) << " is wrong! )" << std::endl;
             }
             if (index == n - 1) {
                 index = 0;
@@ -184,7 +183,7 @@ public:
 
     // to get the current working directory(path)
     std::string GetCurrentWorkingDir() {
-        char buff[FILENAME_MAX];
+        char buff[FILENAME_MAX]{};
         GetCurrentDir(buff, FILENAME_MAX);
         std::string currentWorkingDir(buff);
         return currentWorkingDir;

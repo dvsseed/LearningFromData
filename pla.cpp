@@ -133,7 +133,7 @@ public:
 
     // standard output stream
     void dupstr() {
-        std::cout << "=======================================" << std::endl;
+        std::cout << "===============================================" << std::endl;
     }
 
     // Perceptron Learning Algorithm
@@ -145,7 +145,7 @@ public:
 
         // header
         dupstr();
-        std::cout << "*** To execute the PLA  ( n = " << n << " ) ***" << std::endl;
+        std::cout << "******  To execute the PLA  ( n = " << n << " )  ******" << std::endl;
         dupstr();
 
         // learning algorithm
@@ -174,12 +174,12 @@ public:
 
                 updates++;  // the number of updates
                 correctNum = 0;  // find a mistake so return to 0
-                std::cout << " Update: " << fillZero(2, updates) << "  ( Index = " << fillZero(3, index + 1) << " is wrong! )" << std::endl;
+                std::cout << " Update: " << fillZero(2, updates) << "  ( Index = " << fillZero(3, index + 1) << ", y = " << dataSet[index].output << " is wrong! )" << std::endl;
             }
             if (index == n - 1) {
                 index = 0;
                 runno++;
-                std::cout << "   Times: " << runno << std::endl;
+                std::cout << " >>Times: " << runno << "<<" << std::endl;
             } else {
                 index++;
             }
@@ -191,7 +191,7 @@ public:
 
         // footer
         dupstr();
-        std::cout << "***       Final update: [ " << updates << " ]      ***" << std::endl;
+        std::cout << "******       Final update: [  " << updates << "  ]      ******" << std::endl;
         dupstr();
     }
 

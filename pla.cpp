@@ -208,10 +208,10 @@ public:
 int main() {
     // std::cout << "Current directory is " << GetCurrentWorkingDir() << std::endl;
 
-    // to assign the value of x0 = 1
-    // to assign the file of training examples D: (x1, y1), ... , (xn, yn) = hw1_15_train.dat
-    // The URL is ==> https://www.csie.ntu.edu.tw/~htlin/mooc/datasets/mlfound_math/hw1_15_train.dat
-    PLA cPLA(1, "../hw1_15_train.dat");
+    unsigned short cx0 = 1;                   // to assign the value of x0 = 1
+    string cdatFile = "../hw1_15_train.dat";  // to assign the file of D: training examples D: (x1, y1), ... , (xn, yn)
+    // The Data set's URL is ==> https://www.csie.ntu.edu.tw/~htlin/mooc/datasets/mlfound_math/hw1_15_train.dat
+    PLA cPLA(cx0, cdatFile);
 
     // tranining exmples
     ifstream dataFile(cPLA.datFile);

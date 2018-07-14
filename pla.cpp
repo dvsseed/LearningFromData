@@ -11,6 +11,7 @@
 //
 #include <fstream>
 #include <iostream>
+#include <utility>
 #include <vector>
 #include <string>
 #include <iomanip>
@@ -33,7 +34,6 @@ class PLA {
 
     // to declare a variable of type
     // unsigned short debug = 0;  // for debug=1(show debug text)
-    unsigned short x0 = 1;  // to assign the value of x0
     unsigned short updates = 0;  // the numbers of updates
     unsigned long n = 0;  // the numbers of training examples
 
@@ -49,8 +49,19 @@ class PLA {
 public:
     double weight[DIMENSION]{};  // weight
 
-    string datFile = "../hw1_15_train.dat";  // the file of D: training examples
-    // The URL is ==> https://www.csie.ntu.edu.tw/~htlin/mooc/datasets/mlfound_math/hw1_15_train.dat
+    unsigned short x0;  // to assign the value of x0
+    string datFile;  // to assign the file of D: training examples
+
+    // constructor
+    PLA(unsigned short x0, string datFile) {
+        this->x0 = x0;
+        this->datFile = std::move(datFile);
+    }
+
+    // destructor
+    ~PLA () {
+        std::cout << "End of class!" << std::endl;
+    }
 
     // to read the dat file into the training example's vector
     void getData(ifstream &datFile) {
@@ -196,8 +207,13 @@ public:
 
 int main() {
     // std::cout << "Current directory is " << GetCurrentWorkingDir() << std::endl;
-    PLA cPLA;
 
+    // to assign the value of x0 = 1
+    // to assign the file of training examples D: (x1, y1), ... , (xn, yn) = hw1_15_train.dat
+    // The URL is ==> https://www.csie.ntu.edu.tw/~htlin/mooc/datasets/mlfound_math/hw1_15_train.dat
+    PLA cPLA(1, "../hw1_15_train.dat");
+
+    // tranining exmples
     ifstream dataFile(cPLA.datFile);
     if (dataFile.is_open()) {
         cPLA.getData(dataFile);
@@ -206,9 +222,13 @@ int main() {
         exit(1);
     }
 
+    // start from some w0 and correct its mistakes on D
+    // initialize with w = 0 and take sign(0) as -1
     for (double &i : cPLA.weight) {
         i = 0.0;
     }
+
+    // learning algorithm
     cPLA.PerceptronLearningAlgorithm();
 
     return 0;

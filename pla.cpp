@@ -1,7 +1,7 @@
 //
 // Perceptron Learning Algorithm for no.15 of quiz 1st
 // Created by Davis on 2018/7/7.
-// Modified by Davis on 2018/7/17.
+// Modified by Davis on 2018/7/18.
 // -----------------------------------------------
 //   customer features x: points in R4
 //   labels y: o(+1), x(-1)
@@ -24,7 +24,9 @@
 #include <direct.h>
 #define GetCurrentDir _getcwd
 #else
+
 #include <unistd.h>
+
 #define GetCurrentDir getcwd
 #endif
 
@@ -32,7 +34,7 @@ using namespace std;
 
 class PLA {
     // preprocessor
-    #define DIMENSION 5  // d-dimensional Euclidean space, problem #15 is 4-dimensions
+#define DIMENSION 5  // d-dimensional Euclidean space, problem #15 is 4-dimensions
 
     // to declare a variable of type
     // unsigned short debug = 0;  // for debug=1(show debug text)
@@ -61,7 +63,7 @@ public:
     }
 
     // destructor
-    ~PLA () {
+    ~PLA() {
         std::cout << "End of PLA!" << std::endl;
     }
 
@@ -176,7 +178,8 @@ public:
 
                 updates++;  // the number of updates
                 correctNum = 0;  // find a mistake so return to 0
-                std::cout << " Update: " << fillZero(2, updates) << "  ( Index = " << fillZero(3, index + 1) << ", y = " << dataSet[index].output << " is wrong! )" << std::endl;
+                std::cout << " Update: " << fillZero(2, updates) << "  ( Index = " << fillZero(3, index + 1) << ", y = "
+                          << dataSet[index].output << " is wrong! )" << std::endl;
             }
             if (index == n - 1) {
                 index = 0;

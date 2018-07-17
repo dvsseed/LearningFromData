@@ -1,7 +1,7 @@
 //
 // Perceptron Learning Algorithm for no.15 of quiz 1st
 // Created by Davis on 2018/7/7.
-// Modified by Davis on 2018/7/18.
+// Modified by Davis on 2018/7/19.
 // -----------------------------------------------
 //   customer features x: points in R4
 //   labels y: o(+1), x(-1)

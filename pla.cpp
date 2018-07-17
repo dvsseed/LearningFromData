@@ -1,7 +1,7 @@
 //
 // Perceptron Learning Algorithm for no.15 of quiz 1st
 // Created by Davis on 2018/7/7.
-// Modified by Davis on 2018/7/13.
+// Modified by Davis on 2018/7/17.
 // -----------------------------------------------
 //   customer features x: points in R4
 //   labels y: o(+1), x(-1)
@@ -18,6 +18,7 @@
 #include <sstream>
 #include <string>
 #include <ctime>
+#include <chrono>
 
 #ifdef WINDOWS
 #include <direct.h>
@@ -61,7 +62,7 @@ public:
 
     // destructor
     ~PLA () {
-        std::cout << "End of class!" << std::endl;
+        std::cout << "End of PLA!" << std::endl;
     }
 
     // to read the dat file into the training example's vector
@@ -208,8 +209,8 @@ public:
 
 int main() {
     // measure elapsed time
-    time_t start, end;  // time counter
-    time (&start);  // begin to count
+    std::clock_t c_start = std::clock();  // time counter
+    auto t_start = std::chrono::high_resolution_clock::now();
 
     // std::cout << "Current directory is " << GetCurrentWorkingDir() << std::endl;
 
@@ -236,9 +237,16 @@ int main() {
     // learning algorithm
     cPLA.PerceptronLearningAlgorithm();
 
-    time (&end);  // done the count
-    double dift = difftime(end, start);
-    printf ("Elasped time is %.2lf seconds.\n", dift);
+    // duration time
+    std::clock_t c_end = std::clock();
+    auto t_end = std::chrono::high_resolution_clock::now();
+
+    std::cout << std::fixed << std::setprecision(4) << "CPU time used: "
+              << 1000.0 * (c_end - c_start) / CLOCKS_PER_SEC << " ms"
+              << std::endl << "Wall clock time passed: "
+              << std::chrono::duration<double, std::milli>(t_end - t_start).count()
+              << " ms" << std::endl;
+    cPLA.dupstr();
 
     return 0;
 }

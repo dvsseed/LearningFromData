@@ -17,6 +17,7 @@
 #include <iomanip>
 #include <sstream>
 #include <string>
+#include <ctime>
 
 #ifdef WINDOWS
 #include <direct.h>
@@ -206,6 +207,10 @@ public:
 };  // class
 
 int main() {
+    // measure elapsed time
+    time_t start, end;  // time counter
+    time (&start);  // begin to count
+
     // std::cout << "Current directory is " << GetCurrentWorkingDir() << std::endl;
 
     unsigned short cx0 = 1;                   // to assign the value of x0 = 1
@@ -230,6 +235,10 @@ int main() {
 
     // learning algorithm
     cPLA.PerceptronLearningAlgorithm();
+
+    time (&end);  // done the count
+    double dift = difftime(end, start);
+    printf ("Elasped time is %.2lf seconds.\n", dift);
 
     return 0;
 }
